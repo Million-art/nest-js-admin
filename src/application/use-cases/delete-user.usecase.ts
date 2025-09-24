@@ -1,0 +1,14 @@
+import { UserRepository } from 'src/domain/port/user.repository';
+
+export class DeleteUserUseCase {
+  constructor(private readonly userRepository: UserRepository) {}
+
+  async execute(id: string): Promise<void> {
+    const existingUser = await this.userRepository.findById(id);
+    if (!existingUser) {
+      throw new Error('user not found');
+    }
+
+    await this.userRepository.softDelete(id);
+  }
+}

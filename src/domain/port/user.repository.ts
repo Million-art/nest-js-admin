@@ -1,9 +1,9 @@
-import { UserEntity } from "../entities/user.entity";
+import { UserEntity } from '../entities/user.entity';
 
-export interface UserRepository {
-  save(user: UserEntity): Promise<UserEntity>;
-  findById(id: string): Promise<UserEntity | null>;
-  findByEmail(email: string): Promise<UserEntity | null>;
-  findAll(): Promise<UserEntity[]>;
-  delete(id: string): Promise<void>;
+export abstract class UserRepository {
+  abstract save(user: UserEntity): Promise<UserEntity>;
+  abstract findById(id: string): Promise<UserEntity | null>;
+  abstract findByEmail(email: string): Promise<UserEntity | null>;
+  abstract findAll(): Promise<UserEntity[]>;
+  abstract softDelete(id: string): Promise<void>;
 }

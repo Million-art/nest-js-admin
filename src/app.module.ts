@@ -6,6 +6,9 @@ import * as Joi from 'joi';
 import { HealthController } from './health/health.controller';
 import { TerminusModule } from '@nestjs/terminus';
 import { InfrastructureModule } from './infrastructure/infrastructure.module';
+import { ApplicationModule } from './application/application.module';
+import { UserRepository } from './domain/port/user.repository';
+import { UserRepositoryImpl } from './infrastructure/repository/user.repository';
 
 @Module({
   imports: [
@@ -26,24 +29,29 @@ import { InfrastructureModule } from './infrastructure/infrastructure.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USER'),
-        password: configService.get<string>('DB_PASS'),
-        database: configService.get<string>('DB_NAME'),
-        autoLoadEntities: true, // automatically load entities
-        synchronize: configService.get<string>('NODE_ENV') === 'development', // ❌ never use in prod
-        logging: configService.get<string>('NODE_ENV') === 'development',
-      }),
+      useFactory: async (configService: ConfigService) => {
+        // No await needed here as we're just returning the config object
+        return {
+          type: 'postgres',
+          host: configService.get<string>('DB_HOST'),
+          port: configService.get<number>('DB_PORT'),
+          username: configService.get<string>('DB_USER'),
+          password: configService.get<string>('DB_PASS'),
+          database: configService.get<string>('DB_NAME'),
+          autoLoadEntities: true, // automatically load entities
+          synchronize: configService.get<string>('NODE_ENV') === 'development', // ❌ never use in prod
+          logging: configService.get<string>('NODE_ENV') === 'development',
+        };
+      },
     }),
 
     // Health check
     TerminusModule,
 
     InfrastructureModule,
+    ApplicationModule,
   ],
+
   controllers: [HealthController],
 })
 export class AppModule implements OnApplicationBootstrap {
@@ -56,8 +64,12 @@ export class AppModule implements OnApplicationBootstrap {
       } else {
         console.log('PostgreSQL Not Connected ❌');
       }
-    } catch (err) {
-      console.error('PostgreSQL Connection Error ❌', err.message);
+    } catch (err: any) {
+      console.error(
+        'PostgreSQL Connection Error ❌',
+        err?.message || 'Unknown error',
+      );
     }
+    // No await needed here as we're just logging
   }
 }

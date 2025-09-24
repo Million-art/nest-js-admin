@@ -13,7 +13,7 @@ export class UserEntity implements UserInterface {
     name: string,
     email: string,
     role: Roles,
-    isActive: boolean = true
+    isActive: boolean = true,
   ) {
     this.id = id;
     this.name = name;
@@ -44,20 +44,36 @@ export class UserEntity implements UserInterface {
     return emailRegex.test(email);
   }
 
-  public static create(name: string, email: string, role = Roles.ADMIN): UserEntity {
+  public static create(
+    name: string,
+    email: string,
+    role = Roles.ADMIN,
+  ): UserEntity {
     const id = crypto.randomUUID();
-    return new UserEntity(id, name, email, role);  // isActive defaults to true
+    return new UserEntity(id, name, email, role); // isActive defaults to true
   }
 
-  public updateProfile(name: string): UserEntity {
-    return new UserEntity(this.id, name, this.email, this.role, this.isActive);
+  public updateProfile(name: string, email?: string): UserEntity {
+    return new UserEntity(
+      this.id,
+      name,
+      email || this.email,
+      this.role,
+      this.isActive,
+    );
   }
 
   public changeRole(newRole: Roles): UserEntity {
     if (this.role === Roles.SUPERADMIN) {
       throw new Error('SuperAdmin role cannot be changed');
     }
-    return new UserEntity(this.id, this.name, this.email, newRole, this.isActive);
+    return new UserEntity(
+      this.id,
+      this.name,
+      this.email,
+      newRole,
+      this.isActive,
+    );
   }
 
   public deactivateUser(): UserEntity {

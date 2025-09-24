@@ -29,7 +29,9 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async findById(id: string): Promise<UserEntity | null> {
-    const ormUser = await this.userRepository.findOne({ where: { id } });
+    const ormUser = await this.userRepository.findOne({
+      where: { id, isActive: true },
+    });
 
     if (!ormUser) return null;
 
@@ -43,7 +45,9 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async findByEmail(email: string): Promise<UserEntity | null> {
-    const ormUser = await this.userRepository.findOneBy({ email });
+    const ormUser = await this.userRepository.findOne({
+      where: { email, isActive: true },
+    });
     if (!ormUser) return null;
     return new UserEntity(
       ormUser.id,
@@ -55,7 +59,9 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async findAll(): Promise<UserEntity[]> {
-    const ormUsers = await this.userRepository.find();
+    const ormUsers = await this.userRepository.find({
+      where: { isActive: true },
+    });
     return ormUsers.map(
       (user) =>
         new UserEntity(
@@ -68,7 +74,11 @@ export class UserRepositoryImpl implements UserRepository {
     );
   }
 
-   async delete(id: string): Promise<void> {
-    await this.userRepository.delete(id);
+  async softDelete(id: string): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (user) {
+      user.isActive = false;
+      await this.userRepository.save(user);
+    }
   }
 }
