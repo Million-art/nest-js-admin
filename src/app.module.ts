@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import * as Joi from 'joi';
 import { HealthController } from './health/health.controller';
 import { TerminusModule } from '@nestjs/terminus';
+import { InfrastructureModule } from './infrastructure/infrastructure.module';
 
 @Module({
   imports: [
@@ -40,6 +41,8 @@ import { TerminusModule } from '@nestjs/terminus';
 
     // Health check
     TerminusModule,
+
+    InfrastructureModule,
   ],
   controllers: [HealthController],
 })

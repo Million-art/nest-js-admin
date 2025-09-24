@@ -1,17 +1,18 @@
-import { Controller } from '@nestjs/common';
-import { HealthCheckService, MongooseHealthIndicator } from '@nestjs/terminus';
+import { Controller, Get } from '@nestjs/common';
+import { HealthCheckService, HealthCheck, TypeOrmHealthIndicator } from '@nestjs/terminus';
 
 @Controller('health')
 export class HealthController {
-    constructor(
-        private health:HealthCheckService,
-        private mongo: MongooseHealthIndicator
-    ){}
+  constructor(
+    private health: HealthCheckService,
+    private db: TypeOrmHealthIndicator,
+  ) {}
 
-    check(){
-        return this.health.check([
-            async()=>this.mongo.pingCheck('postgress',{timeout:1500}),
-        ])
-    }
-
+  @Get()
+  @HealthCheck()
+  check() {
+    return this.health.check([
+      async () => this.db.pingCheck('postgres', { timeout: 1500 }),
+    ]);
+  }
 }
