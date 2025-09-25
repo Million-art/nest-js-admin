@@ -8,6 +8,10 @@ import { TerminusModule } from '@nestjs/terminus';
 import { InfrastructureModule } from './infrastructure/infrastructure.module';
 import { ApplicationModule } from './application/application.module';
 import { PresentationModule } from './presentation/presentation.module';
+import { SharedModule } from './shared/shared.module';
+import { AllExceptionsFilter } from './shared/exceptions/all.exception';
+import { LoggerService } from './shared/logs/logger.service';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -46,12 +50,18 @@ import { PresentationModule } from './presentation/presentation.module';
 
     // Health check
     TerminusModule,
-
+    SharedModule,
     InfrastructureModule,
     ApplicationModule,
     PresentationModule,
   ],
-
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+    LoggerService,
+  ],
   controllers: [HealthController],
 })
 export class AppModule implements OnApplicationBootstrap {

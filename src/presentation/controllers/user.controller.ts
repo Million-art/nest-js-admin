@@ -17,6 +17,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserMapper } from '../dto/mappers/user.mapper';
 import { UserResponseDto } from '../dto/user-response.dto';
+import { LoggerService } from 'src/shared/logs/logger.service';
 
 @Controller('users')
 export class UserController {
@@ -26,6 +27,7 @@ export class UserController {
     private readonly getAllUsersUseCase: GetAllUsersUseCase,
     private readonly updateUserUseCase: UpdateUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
+    private readonly logger: LoggerService,
   ) {}
 
   @Post()
@@ -37,17 +39,18 @@ export class UserController {
   @Get()
   async getAll(): Promise<UserResponseDto[]> {
     const users = await this.getAllUsersUseCase.execute();
+    this.logger.log('Fetching all users', UserController.name);
+
     return UserMapper.toResponseDtoList(users);
   }
 
   @Get(':id')
   async getById(@Param('id') id: string): Promise<UserResponseDto> {
-    
     const user = await this.getUserUseCase.execute(id);
     if (!user) {
-    // Throw 404 if user not found
-    throw new NotFoundException(`User with id ${id} not found`);
-  }
+      // Throw 404 if user not found
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
 
     return UserMapper.toResponseDto(user);
   }

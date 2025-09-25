@@ -1,13 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { AllExceptionsFilter } from './shared/exceptions/all.exception';
-
+ 
 async function bootstrap() {
   const PORT = process.env.PORT;
   const app = await NestFactory.create(AppModule);
-
-  // Global prefix
+   // Global prefix
   app.setGlobalPrefix('api'); 
 
   // Validation pipe
@@ -19,9 +17,7 @@ async function bootstrap() {
     }),
   );
 
-  // Global exception filter
-  app.useGlobalFilters(new AllExceptionsFilter());
-
+  
   // Versioning (URI)
   app.enableVersioning({
     type: VersioningType.URI,
