@@ -3,12 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import * as Joi from 'joi';
-import { HealthController } from './health/health.controller';
+import { HealthController } from './infrastructure/monitoring/health/health.controller';
 import { TerminusModule } from '@nestjs/terminus';
 import { InfrastructureModule } from './infrastructure/infrastructure.module';
 import { ApplicationModule } from './application/application.module';
-import { UserRepository } from './domain/port/user.repository';
-import { UserRepositoryImpl } from './infrastructure/repository/user.repository';
+import { PresentationModule } from './presentation/presentation.module';
 
 @Module({
   imports: [
@@ -50,6 +49,7 @@ import { UserRepositoryImpl } from './infrastructure/repository/user.repository'
 
     InfrastructureModule,
     ApplicationModule,
+    PresentationModule,
   ],
 
   controllers: [HealthController],
