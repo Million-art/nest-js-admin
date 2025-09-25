@@ -8,5 +8,3 @@ logs
  
 # dotenv environment variable files
 .env
- 
- .blackboxrules
