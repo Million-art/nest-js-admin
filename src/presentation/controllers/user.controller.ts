@@ -8,16 +8,16 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateUserUseCase } from 'src/application/use-cases/create-user.usecase';
-import { GetAllUsersUseCase } from 'src/application/use-cases/get-all-users-usecase';
-import { GetUserUseCase } from 'src/application/use-cases/get-user-usecase';
-import { UpdateUserUseCase } from 'src/application/use-cases/update-user-usecase';
-import { DeleteUserUseCase } from 'src/application/use-cases/delete-user.usecase';
+import { CreateUserUseCase } from '../../application/use-cases/create-user.usecase';
+import { GetAllUsersUseCase } from '../../application/use-cases/get-all-users-usecase';
+import { GetUserUseCase } from '../../application/use-cases/get-user-usecase';
+import { UpdateUserUseCase } from '../../application/use-cases/update-user-usecase';
+import { DeleteUserUseCase } from '../../application/use-cases/delete-user.usecase';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserMapper } from '../dto/mappers/user.mapper';
 import { UserResponseDto } from '../dto/user-response.dto';
-import { LoggerService } from 'src/shared/logs/logger.service';
+import { LoggerService } from '../../shared/logs/logger.service';
 
 @Controller('users')
 export class UserController {

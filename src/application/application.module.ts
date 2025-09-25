@@ -4,7 +4,7 @@ import { GetUserUseCase } from './use-cases/get-user-usecase';
 import { GetAllUsersUseCase } from './use-cases/get-all-users-usecase';
 import { DeleteUserUseCase } from './use-cases/delete-user.usecase';
 import { UpdateUserUseCase } from './use-cases/update-user-usecase';
-import { InfrastructureModule } from 'src/infrastructure/infrastructure.module';
+import { InfrastructureModule } from '../infrastructure/infrastructure.module';
  
 @Module({
   imports: [InfrastructureModule],

@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
-import { Roles } from 'src/domain/interfaces/enums';
+import { Roles } from '../../domain/interfaces/enums';
 
 export class UpdateUserDto {
   @IsOptional()

@@ -1,6 +1,7 @@
-import { Roles } from 'src/domain/interfaces/enums';
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Roles } from '../../domain/interfaces/enums';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export class UserModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;

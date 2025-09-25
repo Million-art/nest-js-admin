@@ -1,4 +1,4 @@
-import { Roles } from 'src/domain/interfaces/enums';
+import { Roles } from '../../domain/interfaces/enums';
 
 export class UserResponseDto {
   id: string;

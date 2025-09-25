@@ -1,5 +1,7 @@
-import { UserRepository } from 'src/domain/port/user.repository';
+import { Injectable } from '@nestjs/common';
+import { UserRepository } from '../../domain/port/user.repository';
 
+@Injectable()
 export class DeleteUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 
